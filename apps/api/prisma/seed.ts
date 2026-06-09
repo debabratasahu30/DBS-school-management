@@ -62,7 +62,7 @@ async function main() {
 
   // Create Accountant User
   const accountantPassword = await hashPassword('accountant123');
-  const accountant = await prisma.user.create({
+  await prisma.user.create({
     data: {
       email: 'accountant@greenwood.edu',
       password: accountantPassword,

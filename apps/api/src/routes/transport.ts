@@ -13,7 +13,7 @@ const prisma = new PrismaClient({
 router.use(authenticateToken);
 
 // Get all transport routes
-router.get('/', apiLimiter, async (req: AuthRequest, res, next) => {
+router.get('/', apiLimiter, async (req: AuthRequest, res, next): Promise<void> => {
   try {
     console.log('Prisma client models:', Object.keys(prisma).filter(k => !k.startsWith('_')));
     console.log('transportRoute exists:', 'transportRoute' in prisma);
@@ -50,7 +50,7 @@ router.get('/', apiLimiter, async (req: AuthRequest, res, next) => {
 });
 
 // Get transport route by ID
-router.get('/:id', async (req: AuthRequest, res, next) => {
+router.get('/:id', async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const route = await prisma.transportRoute.findUnique({
       where: { id: req.params.id },
@@ -79,7 +79,7 @@ router.post(
     body('endPoint').trim().notEmpty(),
     body('stops').trim().notEmpty(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       console.log('Creating transport route with data:', req.body);
       console.log('School ID from token:', req.schoolId);
@@ -127,7 +127,7 @@ router.put(
     body('endPoint').optional().trim().notEmpty(),
     body('stops').optional().trim().notEmpty(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const route = await prisma.transportRoute.update({
         where: { id: req.params.id },

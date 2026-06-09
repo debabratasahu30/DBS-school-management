@@ -11,7 +11,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // Get all notices
-router.get('/', apiLimiter, async (req: AuthRequest, res, next) => {
+router.get('/', apiLimiter, async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const { category, page = 1, limit = 10 } = req.query;
     const where: any = {};
@@ -39,7 +39,7 @@ router.get('/', apiLimiter, async (req: AuthRequest, res, next) => {
 });
 
 // Get notice by ID
-router.get('/:id', async (req: AuthRequest, res, next) => {
+router.get('/:id', async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const notice = await prisma.notice.findUnique({
       where: { id: req.params.id },
@@ -65,7 +65,7 @@ router.post(
     body('category').isIn(['GENERAL', 'ACADEMIC', 'EVENT', 'URGENT']),
     body('targetAudience').isArray(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const notice = await prisma.notice.create({
         data: { ...req.body, publishedBy: req.userId, publishDate: new Date(), attachments: req.body.attachments || [] },
@@ -95,7 +95,7 @@ router.put(
     body('content').optional().trim().notEmpty(),
     body('category').optional().isIn(['GENERAL', 'ACADEMIC', 'EVENT', 'URGENT']),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const notice = await prisma.notice.update({
         where: { id: req.params.id },
@@ -113,7 +113,7 @@ router.put(
 router.delete(
   '/:id',
   authorizeRoles('ADMIN'),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       await prisma.notice.delete({ where: { id: req.params.id } });
       res.json({ success: true, message: 'Notice deleted successfully' });

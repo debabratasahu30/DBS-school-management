@@ -10,7 +10,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // Get all exams
-router.get('/', apiLimiter, async (req: AuthRequest, res, next) => {
+router.get('/', apiLimiter, async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const { classId, subjectId, page = 1, limit = 10 } = req.query;
     const where: any = {};
@@ -39,7 +39,7 @@ router.get('/', apiLimiter, async (req: AuthRequest, res, next) => {
 });
 
 // Get exam by ID
-router.get('/:id', async (req: AuthRequest, res, next) => {
+router.get('/:id', async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const exam = await prisma.exam.findUnique({
       where: { id: req.params.id },
@@ -56,7 +56,7 @@ router.get('/:id', async (req: AuthRequest, res, next) => {
 });
 
 // Get student report card
-router.get('/report-card/:studentId', async (req: AuthRequest, res, next) => {
+router.get('/report-card/:studentId', async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const { studentId } = req.params;
     const results = await prisma.examResult.findMany({
@@ -97,7 +97,7 @@ router.post(
     body('totalMarks').isInt(),
     body('passingMarks').isInt(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       // Verify class exists
       const classExists = await prisma.class.findUnique({
@@ -145,7 +145,7 @@ router.post(
     body('results.*.studentId').isString(),
     body('results.*.marksObtained').isFloat(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const { results } = req.body;
       const examResults = await Promise.all(
@@ -168,7 +168,7 @@ router.post(
 router.put(
   '/:id',
   authorizeRoles('ADMIN'),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const exam = await prisma.exam.update({
         where: { id: req.params.id },
@@ -186,7 +186,7 @@ router.put(
 router.delete(
   '/:id',
   authorizeRoles('ADMIN'),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       await prisma.exam.delete({ where: { id: req.params.id } });
       res.json({ success: true, message: 'Exam deleted successfully' });

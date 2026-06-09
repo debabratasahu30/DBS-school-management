@@ -21,7 +21,7 @@ router.post(
     body('role').isIn(['ADMIN', 'TEACHER', 'ACCOUNTANT', 'PARENT', 'STUDENT']),
     body('schoolId').isString(),
   ]),
-  async (req, res, next) => {
+  async (req, res, next): Promise<void> => {
     try {
       const { email, password, firstName, lastName, role, phone, schoolId } = req.body;
 
@@ -74,7 +74,7 @@ router.post(
     body('email').isEmail().normalizeEmail(),
     body('password').notEmpty(),
   ]),
-  async (req, res, next) => {
+  async (req, res, next): Promise<void> => {
     try {
       const { email, password } = req.body;
 

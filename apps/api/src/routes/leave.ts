@@ -11,7 +11,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // Get all leave applications
-router.get('/', apiLimiter, async (req: AuthRequest, res, next) => {
+router.get('/', apiLimiter, async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const { studentId, status, page = 1, limit = 10 } = req.query;
     const where: any = {};
@@ -40,7 +40,7 @@ router.get('/', apiLimiter, async (req: AuthRequest, res, next) => {
 });
 
 // Get leave application by ID
-router.get('/:id', async (req: AuthRequest, res, next) => {
+router.get('/:id', async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const application = await prisma.leaveApplication.findUnique({
       where: { id: req.params.id },
@@ -66,7 +66,7 @@ router.post(
     body('endDate').isISO8601(),
     body('reason').trim().notEmpty(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const application = await prisma.leaveApplication.create({
         data: { ...req.body, status: 'PENDING', appliedBy: req.userId },
@@ -93,7 +93,7 @@ router.put(
     body('status').isIn(['APPROVED', 'REJECTED']),
     body('rejectionReason').optional().trim().notEmpty(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const { status, rejectionReason } = req.body;
       const application = await prisma.leaveApplication.update({

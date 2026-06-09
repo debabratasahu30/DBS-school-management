@@ -7,7 +7,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // Get dashboard stats
-router.get('/stats', async (req: AuthRequest, res, next) => {
+router.get('/stats', async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const schoolId = req.schoolId;
     const userId = req.userId;
@@ -371,7 +371,7 @@ router.get('/stats', async (req: AuthRequest, res, next) => {
 });
 
 // Get analytics data
-router.get('/analytics', async (req: AuthRequest, res, next) => {
+router.get('/analytics', async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const schoolId = req.schoolId;
     const thirtyDaysAgo = new Date();

@@ -10,7 +10,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // Get all fee structures
-router.get('/structures', apiLimiter, async (req: AuthRequest, res, next) => {
+router.get('/structures', apiLimiter, async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const { classId, academicYear, page = 1, limit = 10 } = req.query;
     const where: any = {};
@@ -48,7 +48,7 @@ router.post(
     body('dueDate').isISO8601(),
     body('academicYear').trim().notEmpty(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       // Verify school exists
       const school = await prisma.school.findUnique({
@@ -148,7 +148,7 @@ router.post(
     body('paymentDate').isISO8601(),
     body('paymentMethod').isIn(['CASH', 'CARD', 'BANK_TRANSFER', 'ONLINE']),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const payment = await prisma.feePayment.create({
         data: { ...req.body, receivedBy: req.userId, status: 'PAID' },
@@ -165,7 +165,7 @@ router.post(
 router.put(
   '/payments/:id',
   authorizeRoles('ADMIN', 'ACCOUNTANT'),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const payment = await prisma.feePayment.update({
         where: { id: req.params.id },

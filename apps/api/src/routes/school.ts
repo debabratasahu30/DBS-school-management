@@ -10,7 +10,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // Get all schools
-router.get('/', apiLimiter, authorizeRoles('ADMIN'), async (_req: AuthRequest, res, next) => {
+router.get('/', apiLimiter, authorizeRoles('ADMIN'), async (_req: AuthRequest, res, next): Promise<void> => {
   try {
     const schools = await prisma.school.findMany();
     res.json({ success: true, data: schools });
@@ -20,7 +20,7 @@ router.get('/', apiLimiter, authorizeRoles('ADMIN'), async (_req: AuthRequest, r
 });
 
 // Get school by ID
-router.get('/:id', async (req: AuthRequest, res, next) => {
+router.get('/:id', async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const school = await prisma.school.findUnique({ where: { id: req.params.id } });
     if (!school) {
@@ -46,7 +46,7 @@ router.post(
     body('principalName').trim().notEmpty(),
     body('academicYear').trim().notEmpty(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const school = await prisma.school.create({ data: req.body });
       res.status(201).json({ success: true, data: school });
@@ -67,7 +67,7 @@ router.put(
     body('phone').optional().trim().notEmpty(),
     body('email').optional().isEmail(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const school = await prisma.school.update({
         where: { id: req.params.id },

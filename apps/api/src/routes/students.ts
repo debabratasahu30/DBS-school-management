@@ -10,7 +10,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // Get all students
-router.get('/', apiLimiter, async (req: AuthRequest, res, next) => {
+router.get('/', apiLimiter, async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const { classId, page = 1, limit = 10, search } = req.query;
     const where: any = { user: { schoolId: req.schoolId } };
@@ -44,7 +44,7 @@ router.get('/', apiLimiter, async (req: AuthRequest, res, next) => {
 });
 
 // Get student by ID
-router.get('/:id', async (req: AuthRequest, res, next) => {
+router.get('/:id', async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const student = await prisma.student.findUnique({
       where: { id: req.params.id },
@@ -73,7 +73,7 @@ router.post(
     body('classId').isString(),
     body('guardianId').isString(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       // Verify school exists
       const school = await prisma.school.findUnique({
@@ -108,7 +108,7 @@ router.put(
     body('classId').optional().isString(),
     body('status').optional().isIn(['ACTIVE', 'INACTIVE', 'GRADUATED']),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const student = await prisma.student.update({
         where: { id: req.params.id },

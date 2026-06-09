@@ -11,7 +11,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // Get all users (filtered by school)
-router.get('/', apiLimiter, authorizeRoles('ADMIN'), async (req: AuthRequest, res, next) => {
+router.get('/', apiLimiter, authorizeRoles('ADMIN'), async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const { role, page = 1, limit = 10 } = req.query;
     const where: any = { schoolId: req.schoolId };
@@ -38,7 +38,7 @@ router.get('/', apiLimiter, authorizeRoles('ADMIN'), async (req: AuthRequest, re
 });
 
 // Get user by ID
-router.get('/:id', async (req: AuthRequest, res, next) => {
+router.get('/:id', async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const user = await prisma.user.findUnique({
       where: { id: req.params.id },
@@ -62,7 +62,7 @@ router.put(
     body('lastName').optional().trim().notEmpty(),
     body('phone').optional().trim().notEmpty(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const { password, ...updateData } = req.body;
       if (password) {

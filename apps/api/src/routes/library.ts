@@ -10,7 +10,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // Get all books
-router.get('/books', apiLimiter, async (req: AuthRequest, res, next) => {
+router.get('/books', apiLimiter, async (req: AuthRequest, res, next): Promise<void> => {
   try {
     const { category, page = 1, limit = 10 } = req.query;
     const where: any = {};
@@ -46,7 +46,7 @@ router.post(
     body('category').trim().notEmpty(),
     body('totalCopies').isInt(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const book = await prisma.libraryBook.create({
         data: { ...req.body, availableCopies: req.body.totalCopies },
@@ -62,7 +62,7 @@ router.post(
 router.put(
   '/books/:id',
   authorizeRoles('ADMIN'),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const book = await prisma.libraryBook.update({
         where: { id: req.params.id },
@@ -79,7 +79,7 @@ router.put(
 router.delete(
   '/books/:id',
   authorizeRoles('ADMIN'),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       await prisma.libraryBook.delete({ where: { id: req.params.id } });
       res.json({ success: true, message: 'Book deleted successfully' });
@@ -127,7 +127,7 @@ router.post(
     body('studentId').isString(),
     body('dueDate').isISO8601(),
   ]),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const { bookId, studentId, dueDate } = req.body;
 
@@ -167,7 +167,7 @@ router.post(
 router.put(
   '/issues/:id/return',
   authorizeRoles('ADMIN'),
-  async (req: AuthRequest, res, next) => {
+  async (req: AuthRequest, res, next): Promise<void> => {
     try {
       const issue = await prisma.bookIssue.findUnique({ where: { id: req.params.id } });
       if (!issue) {

@@ -44,7 +44,7 @@ const upload = multer({
 router.use(authenticateToken);
 
 // Upload avatar
-router.post('/avatar', upload.single('avatar'), (req: AuthRequest, res, next) => {
+router.post('/avatar', upload.single('avatar'), (req: AuthRequest, res, next): void => {
   try {
     if (!req.file) {
       res.status(400).json({ success: false, error: 'No file uploaded' });
@@ -59,7 +59,7 @@ router.post('/avatar', upload.single('avatar'), (req: AuthRequest, res, next) =>
 });
 
 // Upload document
-router.post('/document', upload.single('document'), (req: AuthRequest, res, next) => {
+router.post('/document', upload.single('document'), (req: AuthRequest, res, next): void => {
   try {
     if (!req.file) {
       res.status(400).json({ success: false, error: 'No file uploaded' });
