@@ -1,16 +1,21 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "./dist",
     "rootDir": ".",
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "strict": false,
     "noImplicitReturns": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": false,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "prisma"]
