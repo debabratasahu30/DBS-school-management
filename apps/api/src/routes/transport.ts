@@ -56,7 +56,8 @@ router.get('/:id', async (req: AuthRequest, res, next) => {
       where: { id: req.params.id },
     });
     if (!route) {
-      return res.status(404).json({ success: false, error: 'Transport route not found' });
+      res.status(404).json({ success: false, error: 'Transport route not found' });
+      return;
     }
     res.json({ success: true, data: route });
   } catch (error) {
@@ -90,10 +91,11 @@ router.post(
       
       if (!school) {
         console.error('School not found with ID:', req.schoolId);
-        return res.status(400).json({ 
+        res.status(400).json({ 
           success: false, 
           error: 'School not found. Please contact administrator.' 
         });
+        return;
       }
       
       console.log('School found:', school.name);

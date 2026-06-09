@@ -13,7 +13,8 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({ success: false, error: 'Access token required' });
+    res.status(401).json({ success: false, error: 'Access token required' });
+    return;
   }
 
   try {
@@ -30,14 +31,16 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
     next();
   } catch (error) {
     console.error('Token verification error:', error);
-    return res.status(403).json({ success: false, error: 'Invalid or expired token' });
+    res.status(403).json({ success: false, error: 'Invalid or expired token' });
+    return;
   }
 };
 
 export const authorizeRoles = (...roles: string[]) => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
     if (!req.role || !roles.includes(req.role)) {
-      return res.status(403).json({ success: false, error: 'Insufficient permissions' });
+      res.status(403).json({ success: false, error: 'Insufficient permissions' });
+      return;
     }
     next();
   };

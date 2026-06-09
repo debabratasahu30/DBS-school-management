@@ -1,5 +1,4 @@
 import { Server as SocketIOServer } from 'socket.io';
-import prisma from '../lib/prisma';
 
 export const setupSocketIO = (io: SocketIOServer) => {
   const notificationNamespace = io.of('/notifications');

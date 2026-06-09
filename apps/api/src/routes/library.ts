@@ -134,7 +134,8 @@ router.post(
       // Check book availability
       const book = await prisma.libraryBook.findUnique({ where: { id: bookId } });
       if (!book || book.availableCopies <= 0) {
-        return res.status(400).json({ success: false, error: 'Book not available' });
+        res.status(400).json({ success: false, error: 'Book not available' });
+        return;
       }
 
       const issue = await prisma.bookIssue.create({
@@ -170,7 +171,8 @@ router.put(
     try {
       const issue = await prisma.bookIssue.findUnique({ where: { id: req.params.id } });
       if (!issue) {
-        return res.status(404).json({ success: false, error: 'Issue not found' });
+        res.status(404).json({ success: false, error: 'Issue not found' });
+        return;
       }
 
       const fine = issue.returnDate && new Date(issue.returnDate) > new Date(issue.dueDate) ? 5 : 0;

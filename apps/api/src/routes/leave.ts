@@ -47,7 +47,8 @@ router.get('/:id', async (req: AuthRequest, res, next) => {
       include: { student: { include: { user: true, class: true } }, applicant: true },
     });
     if (!application) {
-      return res.status(404).json({ success: false, error: 'Leave application not found' });
+      res.status(404).json({ success: false, error: 'Leave application not found' });
+      return;
     }
     res.json({ success: true, data: application });
   } catch (error) {

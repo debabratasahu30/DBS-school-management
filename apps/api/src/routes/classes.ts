@@ -44,7 +44,8 @@ router.get('/:id', async (req: AuthRequest, res, next) => {
       include: { classTeacher: { include: { user: true } }, students: { include: { user: true } }, subjects: { include: { teacher: { include: { user: true } } } } },
     });
     if (!classData) {
-      return res.status(404).json({ success: false, error: 'Class not found' });
+      res.status(404).json({ success: false, error: 'Class not found' });
+      return;
     }
     res.json({ success: true, data: classData });
   } catch (error) {
@@ -75,10 +76,11 @@ router.post(
       
       if (!school) {
         console.error('School not found with ID:', req.schoolId);
-        return res.status(400).json({ 
+        res.status(400).json({ 
           success: false, 
           error: 'School not found. Please contact administrator.' 
         });
+        return;
       }
       
       console.log('School found:', school.name);

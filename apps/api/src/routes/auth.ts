@@ -27,7 +27,8 @@ router.post(
 
       const existingUser = await prisma.user.findUnique({ where: { email } });
       if (existingUser) {
-        return res.status(400).json({ success: false, error: 'Email already registered' });
+        res.status(400).json({ success: false, error: 'Email already registered' });
+        return;
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -79,12 +80,14 @@ router.post(
 
       const user = await prisma.user.findUnique({ where: { email } });
       if (!user) {
-        return res.status(401).json({ success: false, error: 'Invalid credentials' });
+        res.status(401).json({ success: false, error: 'Invalid credentials' });
+        return;
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
-        return res.status(401).json({ success: false, error: 'Invalid credentials' });
+        res.status(401).json({ success: false, error: 'Invalid credentials' });
+        return;
       }
 
       const tokens = {
@@ -110,11 +113,12 @@ router.post(
 );
 
 // Refresh Token
-router.post('/refresh', async (req, res, next) => {
+router.post('/refresh', async (req, res, next): Promise<void> => {
   try {
     const { refreshToken } = req.body;
     if (!refreshToken) {
-      return res.status(401).json({ success: false, error: 'Refresh token required' });
+      res.status(401).json({ success: false, error: 'Refresh token required' });
+      return;
     }
 
     const decoded = verifyRefreshToken(refreshToken);

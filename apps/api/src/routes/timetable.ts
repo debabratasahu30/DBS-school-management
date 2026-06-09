@@ -46,10 +46,11 @@ router.post(
       });
       
       if (!classExists) {
-        return res.status(400).json({ 
+        res.status(400).json({ 
           success: false, 
           error: 'Class not found.' 
         });
+        return;
       }
       
       // Verify subject exists
@@ -58,10 +59,11 @@ router.post(
       });
       
       if (!subjectExists) {
-        return res.status(400).json({ 
+        res.status(400).json({ 
           success: false, 
           error: 'Subject not found.' 
         });
+        return;
       }
       
       const timetable = await prisma.timetable.create({

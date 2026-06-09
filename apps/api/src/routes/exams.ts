@@ -46,7 +46,8 @@ router.get('/:id', async (req: AuthRequest, res, next) => {
       include: { subject: true, class: true, results: { include: { student: { include: { user: true } } } } },
     });
     if (!exam) {
-      return res.status(404).json({ success: false, error: 'Exam not found' });
+      res.status(404).json({ success: false, error: 'Exam not found' });
+      return;
     }
     res.json({ success: true, data: exam });
   } catch (error) {
@@ -63,7 +64,7 @@ router.get('/report-card/:studentId', async (req: AuthRequest, res, next) => {
       include: { exam: { include: { subject: true, class: true } } },
     });
 
-    const reportCard = results.map(result => ({
+    const reportCard = results.map((result: any) => ({
       subject: result.exam.subject.name,
       examName: result.exam.name,
       examType: result.exam.type,
@@ -104,10 +105,11 @@ router.post(
       });
       
       if (!classExists) {
-        return res.status(400).json({ 
+        res.status(400).json({ 
           success: false, 
           error: 'Class not found.' 
         });
+        return;
       }
       
       // Verify subject exists
@@ -116,10 +118,11 @@ router.post(
       });
       
       if (!subjectExists) {
-        return res.status(400).json({ 
+        res.status(400).json({ 
           success: false, 
           error: 'Subject not found.' 
         });
+        return;
       }
       
       const exam = await prisma.exam.create({

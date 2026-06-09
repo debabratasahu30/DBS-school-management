@@ -18,7 +18,7 @@ router.get('/', apiLimiter, async (req: AuthRequest, res, next) => {
     if (date) where.date = new Date(date as string);
     if (classId) {
       const students = await prisma.student.findMany({ where: { classId: classId as string }, select: { id: true } });
-      where.studentId = { in: students.map(s => s.id) };
+      where.studentId = { in: students.map((s: { id: string }) => s.id) };
     }
 
     const [attendance, total] = await Promise.all([
@@ -51,10 +51,10 @@ router.get('/report', async (req: AuthRequest, res, next) => {
       include: { user: true, attendance: { where: { date: { gte: new Date(startDate as string), lte: new Date(endDate as string) } } } },
     });
 
-    const report = students.map(student => {
-      const present = student.attendance.filter(a => a.status === 'PRESENT').length;
-      const absent = student.attendance.filter(a => a.status === 'ABSENT').length;
-      const late = student.attendance.filter(a => a.status === 'LATE').length;
+    const report = students.map((student: any) => {
+      const present = student.attendance.filter((a: any) => a.status === 'PRESENT').length;
+      const absent = student.attendance.filter((a: any) => a.status === 'ABSENT').length;
+      const late = student.attendance.filter((a: any) => a.status === 'LATE').length;
       return {
         student: { id: student.id, name: `${student.user.firstName} ${student.user.lastName}`, admissionNo: student.admissionNo },
         stats: { present, absent, late, total: student.attendance.length, percentage: student.attendance.length > 0 ? Math.round((present / student.attendance.length) * 100) : 0 },

@@ -53,7 +53,8 @@ router.get('/:id', async (req: AuthRequest, res, next) => {
       include: { user: { select: { id: true, email: true, firstName: true, lastName: true, phone: true, avatar: true } }, subjects: { include: { class: true } }, classes: true },
     });
     if (!teacher) {
-      return res.status(404).json({ success: false, error: 'Teacher not found' });
+      res.status(404).json({ success: false, error: 'Teacher not found' });
+      return;
     }
     res.json({ success: true, data: teacher });
   } catch (error) {
@@ -81,10 +82,11 @@ router.post(
       });
       
       if (!school) {
-        return res.status(400).json({ 
+        res.status(400).json({ 
           success: false, 
           error: 'School not found. Please contact administrator.' 
         });
+        return;
       }
       
       const teacher = await prisma.teacher.create({

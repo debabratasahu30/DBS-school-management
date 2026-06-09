@@ -14,10 +14,10 @@ if (!fs.existsSync(UPLOAD_DIR)) {
 
 // Configure multer storage
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (_req, _file, cb) => {
     cb(null, UPLOAD_DIR);
   },
-  filename: (req, file, cb) => {
+  filename: (_req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     cb(null, uniqueSuffix + path.extname(file.originalname));
   },
@@ -47,7 +47,8 @@ router.use(authenticateToken);
 router.post('/avatar', upload.single('avatar'), (req: AuthRequest, res, next) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ success: false, error: 'No file uploaded' });
+      res.status(400).json({ success: false, error: 'No file uploaded' });
+      return;
     }
 
     const fileUrl = `/uploads/${req.file.filename}`;
@@ -61,7 +62,8 @@ router.post('/avatar', upload.single('avatar'), (req: AuthRequest, res, next) =>
 router.post('/document', upload.single('document'), (req: AuthRequest, res, next) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ success: false, error: 'No file uploaded' });
+      res.status(400).json({ success: false, error: 'No file uploaded' });
+      return;
     }
 
     const fileUrl = `/uploads/${req.file.filename}`;

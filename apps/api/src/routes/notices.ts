@@ -46,7 +46,8 @@ router.get('/:id', async (req: AuthRequest, res, next) => {
       include: { publisher: true },
     });
     if (!notice) {
-      return res.status(404).json({ success: false, error: 'Notice not found' });
+      res.status(404).json({ success: false, error: 'Notice not found' });
+      return;
     }
     res.json({ success: true, data: notice });
   } catch (error) {

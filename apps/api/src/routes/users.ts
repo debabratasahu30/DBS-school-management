@@ -45,7 +45,8 @@ router.get('/:id', async (req: AuthRequest, res, next) => {
       select: { id: true, email: true, firstName: true, lastName: true, role: true, phone: true, avatar: true, schoolId: true, createdAt: true },
     });
     if (!user) {
-      return res.status(404).json({ success: false, error: 'User not found' });
+      res.status(404).json({ success: false, error: 'User not found' });
+      return;
     }
     res.json({ success: true, data: user });
   } catch (error) {

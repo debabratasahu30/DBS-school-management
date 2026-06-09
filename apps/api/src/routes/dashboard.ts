@@ -78,8 +78,8 @@ router.get('/stats', async (req: AuthRequest, res, next) => {
         return res.status(404).json({ success: false, error: 'Teacher not found' });
       }
 
-      const classIds = teacher.classes.map(c => c.id);
-      const subjectIds = teacher.subjects.map(s => s.id);
+      const classIds = teacher.classes.map((c: any) => c.id);
+      const subjectIds = teacher.subjects.map((s: any) => s.id);
 
       const [
         myClasses,
@@ -264,7 +264,7 @@ router.get('/stats', async (req: AuthRequest, res, next) => {
         },
       });
 
-      const childIds = children.map(c => c.id);
+      const childIds = children.map((c: any) => c.id);
 
       const [
         totalChildren,
@@ -322,7 +322,7 @@ router.get('/stats', async (req: AuthRequest, res, next) => {
 
       stats = {
         totalChildren,
-        children: children.map(c => ({
+        children: children.map((c: any) => ({
           name: `${c.user.firstName} ${c.user.lastName}`,
           class: c.class.name,
           email: c.user.email,

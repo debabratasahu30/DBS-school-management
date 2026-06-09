@@ -56,10 +56,11 @@ router.post(
       });
       
       if (!school) {
-        return res.status(400).json({ 
+        res.status(400).json({ 
           success: false, 
           error: 'School not found. Please contact administrator.' 
         });
+        return;
       }
       
       // Verify class exists
@@ -68,10 +69,11 @@ router.post(
       });
       
       if (!classExists) {
-        return res.status(400).json({ 
+        res.status(400).json({ 
           success: false, 
           error: 'Class not found.' 
         });
+        return;
       }
       
       const structure = await prisma.feeStructure.create({
@@ -121,7 +123,7 @@ router.get('/outstanding', async (req: AuthRequest, res, next) => {
     const where: any = { status: { in: ['PENDING', 'OVERDUE', 'PARTIAL'] } };
     if (classId) {
       const students = await prisma.student.findMany({ where: { classId: classId as string }, select: { id: true } });
-      where.studentId = { in: students.map(s => s.id) };
+      where.studentId = { in: students.map((s: { id: string }) => s.id) };
     }
 
     const outstanding = await prisma.feePayment.findMany({

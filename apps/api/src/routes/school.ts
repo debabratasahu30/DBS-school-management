@@ -10,7 +10,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // Get all schools
-router.get('/', apiLimiter, authorizeRoles('ADMIN'), async (req: AuthRequest, res, next) => {
+router.get('/', apiLimiter, authorizeRoles('ADMIN'), async (_req: AuthRequest, res, next) => {
   try {
     const schools = await prisma.school.findMany();
     res.json({ success: true, data: schools });
@@ -24,7 +24,8 @@ router.get('/:id', async (req: AuthRequest, res, next) => {
   try {
     const school = await prisma.school.findUnique({ where: { id: req.params.id } });
     if (!school) {
-      return res.status(404).json({ success: false, error: 'School not found' });
+      res.status(404).json({ success: false, error: 'School not found' });
+      return;
     }
     res.json({ success: true, data: school });
   } catch (error) {
