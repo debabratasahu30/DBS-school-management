@@ -18,7 +18,7 @@ router.get('/', apiLimiter, async (req: AuthRequest, res, next) => {
     if (date) where.date = new Date(date as string);
     if (classId) {
       const students = await prisma.student.findMany({ where: { classId: classId as string }, select: { id: true } });
-      where.studentId = { in: students.map((s: { id: string }) => s.id) };
+      where.studentId = { in: students.map((s: any) => s.id) };
     }
 
     const [attendance, total] = await Promise.all([

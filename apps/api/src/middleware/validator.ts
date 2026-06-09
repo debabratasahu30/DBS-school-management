@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult, ValidationChain } from 'express-validator';
 
 export const validateRequest = (validations: ValidationChain[]) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     for (const validation of validations) {
       const result = await validation.run(req);
       if (!result.isEmpty()) break;

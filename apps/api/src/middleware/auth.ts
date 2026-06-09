@@ -8,7 +8,7 @@ export interface AuthRequest extends Request {
   schoolId?: string;
 }
 
-export const authenticateToken = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const authenticateToken = (req: AuthRequest, res: Response, next: NextFunction): void => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -37,7 +37,7 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
 };
 
 export const authorizeRoles = (...roles: string[]) => {
-  return (req: AuthRequest, res: Response, next: NextFunction) => {
+  return (req: AuthRequest, res: Response, next: NextFunction): void => {
     if (!req.role || !roles.includes(req.role)) {
       res.status(403).json({ success: false, error: 'Insufficient permissions' });
       return;
