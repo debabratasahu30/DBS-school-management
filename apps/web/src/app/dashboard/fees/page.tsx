@@ -114,7 +114,7 @@ export default function FeesPage() {
     { key: 'amount' as const, header: 'Amount' },
     { key: 'dueDate' as const, header: 'Due Date' },
     { key: 'status' as const, header: 'Status', render: (value: any) => <StatusBadge status={value} /> },
-    { key: 'actions' as const, header: 'Actions', render: (value: any, row: any) => (
+    { key: 'actions' as const, header: 'Actions', render: (row: any) => (
       <div className="flex gap-2">
         <Button variant="ghost" size="sm">View</Button>
         <Button variant="ghost" size="sm">Payment</Button>

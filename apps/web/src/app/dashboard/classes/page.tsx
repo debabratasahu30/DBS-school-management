@@ -128,7 +128,7 @@ export default function ClassesPage() {
     { key: 'capacity' as const, header: 'Capacity' },
     { key: 'students' as const, header: 'Students' },
     { key: 'classTeacher' as const, header: 'Class Teacher' },
-    { key: 'actions' as const, header: 'Actions', render: (value: any, row: any) => (
+    { key: 'actions' as const, header: 'Actions', render: (row: any) => (
       <div className="flex gap-2">
         <Button variant="ghost" size="sm" onClick={() => handleOpenModal(row)}>Edit</Button>
       </div>

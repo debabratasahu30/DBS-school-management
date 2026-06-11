@@ -23,11 +23,11 @@ export default function StudentsPage() {
 
   const columns = [
     { key: 'admissionNo' as const, header: 'Admission No' },
-    { key: 'name' as const, header: 'Name', render: (value: any, row: any) => `${row.firstName} ${row.lastName}` },
+    { key: 'name' as const, header: 'Name', render: (row: any) => `${row.firstName} ${row.lastName}` },
     { key: 'class' as const, header: 'Class' },
     { key: 'gender' as const, header: 'Gender' },
     { key: 'status' as const, header: 'Status', render: (value: any) => <StatusBadge status={value} /> },
-    { key: 'actions' as const, header: 'Actions', render: (value: any, row: any) => (
+    { key: 'actions' as const, header: 'Actions', render: (row: any) => (
       <div className="flex gap-2">
         <Button variant="ghost" size="sm" asChild>
           <Link href={`/students/${row.id}`}>View</Link>

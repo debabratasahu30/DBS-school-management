@@ -23,11 +23,11 @@ export default function TeachersPage() {
 
   const columns = [
     { key: 'employeeId' as const, header: 'Employee ID' },
-    { key: 'name' as const, header: 'Name', render: (value: any, row: any) => `${row.firstName} ${row.lastName}` },
+    { key: 'name' as const, header: 'Name', render: (row: any) => `${row.firstName} ${row.lastName}` },
     { key: 'subject' as const, header: 'Subject' },
     { key: 'experience' as const, header: 'Experience (years)' },
     { key: 'status' as const, header: 'Status', render: (value: any) => <StatusBadge status={value} /> },
-    { key: 'actions' as const, header: 'Actions', render: (value: any, row: any) => (
+    { key: 'actions' as const, header: 'Actions', render: (row: any) => (
       <div className="flex gap-2">
         <Button variant="ghost" size="sm" asChild>
           <Link href={`/teachers/${row.id}`}>View</Link>

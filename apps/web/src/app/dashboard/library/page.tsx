@@ -120,7 +120,7 @@ export default function LibraryPage() {
     { key: 'isbn' as const, header: 'ISBN' },
     { key: 'category' as const, header: 'Category' },
     { key: 'available' as const, header: 'Available', render: (value: any, row: any) => `${value}/${row.total}` },
-    { key: 'actions' as const, header: 'Actions', render: (value: any, row: any) => (
+    { key: 'actions' as const, header: 'Actions', render: (row: any) => (
       <div className="flex gap-2">
         <Button variant="ghost" size="sm">Issue</Button>
         <Button variant="ghost" size="sm" onClick={() => handleOpenModal(row)}>Edit</Button>

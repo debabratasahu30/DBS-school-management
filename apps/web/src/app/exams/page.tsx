@@ -20,7 +20,7 @@ export default function ExamsPage() {
     { key: 'class' as const, header: 'Class' },
     { key: 'date' as const, header: 'Date' },
     { key: 'totalMarks' as const, header: 'Total Marks' },
-    { key: 'actions' as const, header: 'Actions', render: (value: any, row: any) => (
+    { key: 'actions' as const, header: 'Actions', render: (row: any) => (
       <div className="flex gap-2">
         <Button variant="ghost" size="sm">Results</Button>
         <Button variant="ghost" size="sm">Edit</Button>
